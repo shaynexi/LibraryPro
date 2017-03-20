@@ -56,7 +56,6 @@ public class Login extends JFrame {
 		login.addActionListener(new ActionListener(){
 			public void actionPerformed(final ActionEvent e){
 				System.out.println("点击登录");
-				
 				if(username_textField.getText() == null || username_textField.getText().length() <= 0){
 					System.out.println("请输入用户名");
 				}else if(password_textField.getText() == null || password_textField.getText().length() <= 0){
@@ -69,12 +68,13 @@ public class Login extends JFrame {
 						System.out.println("该用户名不存在");
 					}else if(passWord.equals(password_textField.getText())){
 						System.out.println("登录成功");
+						setVisible(false);
+						BorrowJframe borrowJframe = new BorrowJframe();
+						
 					}else{
 						System.out.println("密码不正确");
 					}
 				}
-				
-//				System.out.println("该用户的学号是：");
 			}
 		});
 		JButton back = new JButton("返回");
@@ -82,6 +82,7 @@ public class Login extends JFrame {
 		panel.add(back);
 		container.add(panel);
 		
+		setResizable(false);
 		setVisible(true);
 	}
 	
