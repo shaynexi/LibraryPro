@@ -26,9 +26,11 @@ public class BorrowJframe extends JFrame{
 //		  return icon;
 //		 }
 	
-	public BorrowJframe(){
-		super();
-		Container container = getContentPane();
+	public void Borrow(){
+		Login login = new Login();
+		Container container = login.container;
+//		super();
+//		Container container = getContentPane();
 		container.setLayout(null);
 		container.setBackground(Color.cyan);
 		setBounds(450,150,1000,800);
