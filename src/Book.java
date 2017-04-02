@@ -1,6 +1,6 @@
 	
 public class Book {
-	private boolean reserve;				  //预定状态，true为预定，false为正常状态
+	private int reserve;				      //预定状态，1为预定，0为正常状态
 	private int price;                        //书籍价格
 	private int borrowStatus;			      //书籍状态，0为可借状态；1为借出状态；2为超过日期状态
 	private String bookNumber;                //书籍唯一编号
@@ -10,9 +10,9 @@ public class Book {
 	private String coverPicture;              //书籍封面图片
 	private String bookClass;                 //书籍类别
 	private String bookLocation;              //藏书位置
+	private String author;                    //作者
 	
-	
-	public boolean getreserve(){
+	public int getreserve(){
 		return this.reserve;
 	}
 	public int getprice(){
@@ -42,9 +42,11 @@ public class Book {
 	public String getbookLocation(){
 		return this.bookLocation;
 	}
+	public String getAuthor(){
+		return this.author;
+	}
 	
-	
-	public void setreserve(boolean reserve){
+	public void setreserve(int reserve){
 		this.reserve = reserve;
 	}
 	public void setprice(int price){
@@ -55,6 +57,9 @@ public class Book {
 	}
 	public void setbookNumber(String booknumber){
 		this.bookNumber = booknumber;
+	}
+	public void setbookName(String bookname){
+		this.bookName = bookname;
 	}
 	public void setpublishCompany(String publishcompany){
 		this.publishCompany = publishcompany;
@@ -70,5 +75,8 @@ public class Book {
 	}
 	public void setbookLocation(String booklocation){
 		this.bookLocation = booklocation;
+	}
+	public void setAuthor(String author){
+		this.author = author;
 	}
 }
