@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class HomePage extends JFrame{
@@ -134,10 +135,6 @@ public class HomePage extends JFrame{
 		
 		
 		/*********************************************** 登录界面  ***********************************************/
-
-//		super();
-//		setTitle("登录界面");
-//		container = getContentPane();
 		
 		
 		login_Panel = new JPanel(null);
@@ -203,9 +200,7 @@ public class HomePage extends JFrame{
 						
 						}
 						login_Panel.setVisible(false);
-						borrow_wholePanel.setVisible(true);
-						
-						
+						borrow_wholePanel.setVisible(true);		
 					}else{
 						System.out.println("密码不正确");
 					}
@@ -273,49 +268,77 @@ public class HomePage extends JFrame{
 								status = "异常";
 								System.out.println("书本异常");
 							}
-							JLabel borrow_BookName = new JLabel(""+findBook.getbookName());
+							JTextArea borrow_BookName = new JTextArea(""+findBook.getbookName());
 							Font font_borrow_BookName = new Font("宋体",Font.BOLD,20);
 							borrow_BookName.setFont(font_borrow_BookName);
-							borrow_BookName.setBounds(100,50,200,30);
+							borrow_BookName.setLineWrap(true);
+							borrow_BookName.setBackground(Color.cyan);
+							borrow_BookName.setEditable(false);
+							borrow_BookName.setBounds(100,50,250,30);
 							borrow_bookInformationPanel.add(borrow_BookName);
 							
-							JLabel borrow_publishCompany = new JLabel(""+findBook.getpublishCompany());
+							JTextArea borrow_publishCompany = new JTextArea(""+findBook.getpublishCompany());
 							Font font_borrow_publishCompany = new Font("宋体",Font.BOLD,20);
 							borrow_publishCompany.setFont(font_borrow_publishCompany);
-							borrow_publishCompany.setBounds(100,80,200,30);
+							borrow_publishCompany.setLineWrap(true);
+							borrow_publishCompany.setBackground(Color.cyan);
+							borrow_publishCompany.setEditable(false);
+							borrow_publishCompany.setBounds(100,80,250,30);
 							borrow_bookInformationPanel.add(borrow_publishCompany);
 							
-							JLabel borrow_author = new JLabel(""+findBook.getAuthor());
+							JTextArea borrow_author = new JTextArea(""+findBook.getAuthor());
 							Font font_borrow_author = new Font("宋体",Font.BOLD,20);
 							borrow_author.setFont(font_borrow_author);
-							borrow_author.setBounds(100,110,200,30);
+							borrow_author.setLineWrap(true);
+							borrow_author.setBackground(Color.cyan);
+							borrow_author.setEditable(false);
+							borrow_author.setBounds(100,110,250,30);
 							borrow_bookInformationPanel.add(borrow_author);
 							
-							JLabel borrow_briefInformation = new JLabel(""+findBook.getbriefInformation());
+							JTextArea borrow_briefInformation = new JTextArea(""+findBook.getbriefInformation());
 							Font font_borrow_briefInformation = new Font("宋体",Font.BOLD,20);
 							borrow_briefInformation.setFont(font_borrow_briefInformation);
-							borrow_briefInformation.setBounds(100,140,200,30);
+							borrow_briefInformation.setLineWrap(true);
+							borrow_briefInformation.setBackground(Color.cyan);
+							borrow_briefInformation.setEditable(false);
+							borrow_briefInformation.setBounds(100,140,250,200);
 							borrow_bookInformationPanel.add(borrow_briefInformation);
 							
-							JLabel borrow_status = new JLabel(""+status);
+							JTextArea borrow_status = new JTextArea(""+status);
 							Font font_borrow_status = new Font("宋体",Font.BOLD,20);
 							borrow_status.setFont(font_borrow_status);
-							borrow_status.setBounds(100,360,200,30);
+							borrow_status.setLineWrap(true);
+							borrow_status.setBackground(Color.cyan);
+							borrow_status.setEditable(false);
+							borrow_status.setBounds(100,360,250,30);
 							borrow_bookInformationPanel.add(borrow_status);
 							
-							JLabel borrow_number = new JLabel(""+findBook.getbookNumber());
+							JTextArea borrow_number = new JTextArea(""+findBook.getbookNumber());
 							Font font_borrow_number = new Font("宋体",Font.BOLD,20);
 							borrow_number.setFont(font_borrow_number);
-							borrow_number.setBounds(100,390,200,30);
+							borrow_number.setLineWrap(true);
+							borrow_number.setBackground(Color.cyan);
+							borrow_number.setEditable(false);
+							borrow_number.setBounds(100,390,250,30);
 							borrow_bookInformationPanel.add(borrow_number);
 							
-							JLabel borrow_BookClass = new JLabel(""+findBook.getbookClass());
+							JTextArea borrow_BookClass = new JTextArea(""+findBook.getbookClass());
 							Font font_borrow_BookClass = new Font("宋体",Font.BOLD,20);
 							borrow_BookClass.setFont(font_borrow_BookClass);
-							borrow_BookClass.setBounds(100,420,200,30);
+							borrow_BookClass.setLineWrap(true);
+							borrow_BookClass.setBackground(Color.cyan);
+							borrow_BookClass.setEditable(false);
+							borrow_BookClass.setBounds(100,420,250,30);
 							borrow_bookInformationPanel.add(borrow_BookClass);
 							
-							
+							ImageIcon icon = new ImageIcon(getClass().getResource(findBook.getcoverPicture()));
+							Image image = icon.getImage();
+							image = image.getScaledInstance(300, 400, Image.SCALE_DEFAULT);
+							JLabel bookcover = new JLabel();
+							icon.setImage(image);
+							bookcover.setIcon(icon);
+							bookcover.setBounds(100,50,icon.getIconWidth(),icon.getIconHeight());
+							borrow_coverPicturePanel.add(bookcover);
 							
 							System.out.println("书名："+findBook.getbookName());
 						}
@@ -326,6 +349,23 @@ public class HomePage extends JFrame{
 		});
 		confirm.setBounds(100,20,90,30);
 		borrow_inputPanel.add(confirm);
+		JButton inputPanel_return = new JButton("返回");
+		inputPanel_return.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				bookNumber_textfield.setText("");
+				login_Panel.setVisible(true);
+				borrow_wholePanel.setVisible(false);
+				borrow_bottomButtonPanel.setVisible(false);
+				borrow_coverPicturePanel.setVisible(false);
+				borrow_bookInformationPanel.setVisible(false);
+			}
+			
+		});
+		inputPanel_return.setBounds(130,20,90,30);
+		borrow_inputPanel.add(inputPanel_return);
 		borrow_inputPanel.setBounds(100,50,800,50);
 		borrow_inputPanel.setBackground(Color.cyan);
 		borrow_wholePanel.add(borrow_inputPanel);
@@ -341,36 +381,15 @@ public class HomePage extends JFrame{
 				
 			}
 		});
-		borrow.setBounds(300,0,100,30);
+		borrow.setBounds(450,0,100,30);
 		borrow_bottomButtonPanel.add(borrow);
-		JButton borrow_back = new JButton("返回");
-		borrow_back.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				bookNumber_textfield.setText("");
-				login_Panel.setVisible(true);
-				borrow_wholePanel.setVisible(false);
-				borrow_bottomButtonPanel.setVisible(false);
-				borrow_coverPicturePanel.setVisible(false);
-				borrow_bookInformationPanel.setVisible(false);
-			}
-		});
-		borrow_back.setBounds(500,0,100,30);
-		borrow_bottomButtonPanel.add(borrow_back);
 		borrow_wholePanel.add(borrow_bottomButtonPanel);
+		
 		borrow_coverPicturePanel = new JPanel();
 		borrow_coverPicturePanel.setLayout(null);
 		borrow_coverPicturePanel.setBackground(Color.cyan);
 		borrow_coverPicturePanel.setBounds(50,100,400,500);
-		ImageIcon icon = new ImageIcon(getClass().getResource("bookcover.jpg"));
-		Image image = icon.getImage();
-		image = image.getScaledInstance(300, 400, Image.SCALE_DEFAULT);
-		JLabel bookcover = new JLabel();
-		icon.setImage(image);
-		bookcover.setIcon(icon);
-		bookcover.setBounds(100,50,icon.getIconWidth(),icon.getIconHeight());
-		borrow_coverPicturePanel.add(bookcover);
+		
 		borrow_bookInformationPanel = new JPanel();
 		borrow_bookInformationPanel.setLayout(null);
 		borrow_bookInformationPanel.setBounds(500, 100, 400, 500);
