@@ -30,6 +30,7 @@ public class HomePage extends JFrame{
 	private JPanel login_Panel;
 	private JPanel home_Panel;
 	
+	private Book findBook;
 	
 	public HomePage(){
 		
@@ -133,6 +134,7 @@ public class HomePage extends JFrame{
 		setResizable(false);   //固定窗口大小
 		setVisible(true);
 		
+		/*********************************************** 首页结束  ***********************************************/
 		
 		/*********************************************** 登录界面  ***********************************************/
 		
@@ -230,8 +232,7 @@ public class HomePage extends JFrame{
 		borrow_wholePanel.setLayout(null);
 		borrow_wholePanel.setBounds(0, 0, 1000, 800);
 		borrow_wholePanel.setBackground(Color.cyan);
-		
-		
+	
 		borrow_inputPanel = new JPanel();
 		JLabel label = new JLabel("请输入图书编号：");
 		Font borrow_topPanel_font = new Font("宋体",Font.BOLD,20);
@@ -242,6 +243,8 @@ public class HomePage extends JFrame{
 		bookNumber_textfield.setBounds(0,20,80,50);
 		borrow_inputPanel.add(bookNumber_textfield);
 		JButton confirm = new JButton("确认");
+		
+		
 		confirm.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -250,7 +253,7 @@ public class HomePage extends JFrame{
 					if(bookNumber_textfield.getText() == null || bookNumber_textfield.getText().length() <= 0){
 						System.out.println("请输入图书编号");
 					}else{
-						Book findBook = borrowInformation.getBookInformation(bookNumber_textfield.getText());
+						findBook = borrowInformation.getBookInformation(bookNumber_textfield.getText());
 						if(findBook == null){
 							System.out.println("没有该图书");
 						}else{
@@ -264,10 +267,15 @@ public class HomePage extends JFrame{
 							}else if(findBook.getreserve() == 0 && findBook.getborrowStatus() == 0){
 								System.out.println("该书可借出");
 								status = "可借";
-							}else{
-								status = "异常";
-								System.out.println("书本异常");
+							}else if(findBook.getborrowStatus() == 1){
+								status = "已借出";
+								System.out.println("书本已借出");
+							}else if(findBook.getborrowStatus() == 2){
+								status = "超过日期";
+								System.out.println("书本超过日期");
+								
 							}
+							
 							JTextArea borrow_BookName = new JTextArea(""+findBook.getbookName());
 							Font font_borrow_BookName = new Font("宋体",Font.BOLD,20);
 							borrow_BookName.setFont(font_borrow_BookName);
@@ -378,6 +386,15 @@ public class HomePage extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				if(findBook.getborrowStatus() == 0 && findBook.getreserve() == 0){
+					UpdateBook updatebook = new UpdateBook();
+					updatebook.UpdateBookBorrowStatus(1, bookNumber_textfield.getText());
+				}else if(findBook.getreserve() == 1){
+					System.out.println("该书已被预定");
+				}else if(findBook.getborrowStatus() == 1){
+					System.out.println("该书已借出");
+					ShowMessageDialog dialog = new ShowMessageDialog("该书已借出");
+				}
 				
 			}
 		});
@@ -440,7 +457,15 @@ public class HomePage extends JFrame{
 		borrow_coverPicturePanel.setVisible(false);
 		borrow_bookInformationPanel.setVisible(false);
 		borrow_inputPanel.setVisible(true);
+		
+		/*********************************************** 借书界面结束  ***********************************************/
+		
+		/*********************************************** 还书界面  ***********************************************/
+		
+		
 	}
+	
+	
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
