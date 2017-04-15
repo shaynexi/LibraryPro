@@ -29,7 +29,8 @@ public class HomePage extends JFrame{
 	private JPanel borrow_bookInformationPanel;
 	private JPanel login_Panel;
 	private JPanel home_Panel;
-	
+	private JButton borrow;
+	private JButton returnBook;
 	private Book findBook;
 	
 	public HomePage(){
@@ -86,6 +87,8 @@ public class HomePage extends JFrame{
 				// TODO Auto-generated method stub
 				choose = 3;
 				System.out.println("点击图书归还");
+				home_Panel.setVisible(false);
+				login_Panel.setVisible(true);
 			}
 			
 		});
@@ -186,9 +189,13 @@ public class HomePage extends JFrame{
 							break;
 						case 2:
 							System.out.println("图书借阅");
+							borrow.setVisible(true);
+							returnBook.setVisible(false);
 							break;
 						case 3:
 							System.out.println("图书归还");
+							borrow.setVisible(false);
+							returnBook.setVisible(true);
 							break;
 						case 4:
 							System.out.println("查看借阅");
@@ -227,7 +234,7 @@ public class HomePage extends JFrame{
 		container.add(login_Panel);
 		login_Panel.setVisible(false);
 		
-		/*********************************************** 借书界面  ***********************************************/
+		/*********************************************** 借书/还书 界面  ***********************************************/
 		borrow_wholePanel = new JPanel();
 		borrow_wholePanel.setLayout(null);
 		borrow_wholePanel.setBounds(0, 0, 1000, 800);
@@ -349,6 +356,9 @@ public class HomePage extends JFrame{
 							borrow_coverPicturePanel.add(bookcover);
 							
 							System.out.println("书名："+findBook.getbookName());
+							
+							
+
 						}
 					}
 					
@@ -381,7 +391,7 @@ public class HomePage extends JFrame{
 		borrow_bottomButtonPanel.setLayout(null);
 		borrow_bottomButtonPanel.setBounds(0,650,1000,30);
 		borrow_bottomButtonPanel.setBackground(Color.cyan);
-		JButton borrow = new JButton("借书");
+		 borrow = new JButton("借书");
 		borrow.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -389,8 +399,10 @@ public class HomePage extends JFrame{
 				if(findBook.getborrowStatus() == 0 && findBook.getreserve() == 0){
 					UpdateBook updatebook = new UpdateBook();
 					updatebook.UpdateBookBorrowStatus(1, bookNumber_textfield.getText());
+					ShowMessageDialog dialog = new ShowMessageDialog("借书成功");
 				}else if(findBook.getreserve() == 1){
 					System.out.println("该书已被预定");
+					ShowMessageDialog dialog = new ShowMessageDialog("该书已被预定");
 				}else if(findBook.getborrowStatus() == 1){
 					System.out.println("该书已借出");
 					ShowMessageDialog dialog = new ShowMessageDialog("该书已借出");
@@ -400,6 +412,30 @@ public class HomePage extends JFrame{
 		});
 		borrow.setBounds(450,0,100,30);
 		borrow_bottomButtonPanel.add(borrow);
+		borrow_wholePanel.add(borrow_bottomButtonPanel);
+		
+		returnBook = new JButton("还书");
+		returnBook.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(findBook.getborrowStatus() == 1){
+					UpdateBook updatebook = new UpdateBook();
+					updatebook.UpdateBookBorrowStatus(0, bookNumber_textfield.getText());
+					ShowMessageDialog dialog = new ShowMessageDialog("还书成功");
+				}else if(findBook.getborrowStatus() == 0){
+					System.out.println("该书已归还");
+					ShowMessageDialog dialog = new ShowMessageDialog("该书已归还");
+				}else if(findBook.getborrowStatus() == 2){
+					System.out.println("借阅超过日期，请到前台归还");
+					ShowMessageDialog dialog = new ShowMessageDialog("借阅超过日期，请到前台归还");
+				}
+			}
+			
+		});
+		returnBook.setBounds(450,0,100,30);
+		borrow_bottomButtonPanel.add(returnBook);
 		borrow_wholePanel.add(borrow_bottomButtonPanel);
 		
 		borrow_coverPicturePanel = new JPanel();
@@ -458,9 +494,9 @@ public class HomePage extends JFrame{
 		borrow_bookInformationPanel.setVisible(false);
 		borrow_inputPanel.setVisible(true);
 		
-		/*********************************************** 借书界面结束  ***********************************************/
+		/*********************************************** 借书/还书 界面结束  ***********************************************/
 		
-		/*********************************************** 还书界面  ***********************************************/
+		
 		
 		
 	}
