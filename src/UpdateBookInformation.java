@@ -164,5 +164,33 @@ public class UpdateBookInformation {
 		}
 	}
 	
+	//更改图书借书时间
+	public void UpdateBookBorrowTime(String borrowtime, String num){
+			
+		try {
+			String sql = "update book_information set book_borrowtime = ? where book_number = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1,borrowtime);
+			statement.setString(2, num);
+			statement.execute();
+		} catch (SQLException e) {				
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
+	//更改图书还书时间
+	public void UpdateBookReturnTime(String returntime, String num){
+			
+		try {
+			String sql = "update book_information set book_returntime = ? where book_number = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1,returntime);
+			statement.setString(2, num);
+			statement.execute();
+		} catch (SQLException e) {				
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}	
 }

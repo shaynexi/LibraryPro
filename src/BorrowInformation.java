@@ -31,6 +31,8 @@ public class BorrowInformation {
 				findBook.setreserve(rest.getInt("book_reserve"));
 				findBook.setbookName(rest.getString("book_name"));
 				findBook.setAuthor(rest.getString("book_author"));
+				findBook.setborrowTime(rest.getString("book_borrowtime"));
+				findBook.setreturnTime(rest.getString("book_returntime"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

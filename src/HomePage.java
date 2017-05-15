@@ -5,6 +5,11 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -219,15 +224,18 @@ public class HomePage extends JFrame{
 						System.out.println("该用户名不存在");
 					}else if(passWord.equals(password_textField.getText())){
 						System.out.println("登录成功");
+						
 						loginUser = finduserinformation.findInformation(username_textField.getText());
+						username_textField.setText("");
+						password_textField.setText("");
+						
 						System.out.println("登陆用户的学号是："+loginUser.getStudentnum());
 						System.out.println("登陆用户的密码是："+loginUser.getpassWord());
 						System.out.println("登陆用户的姓名是："+loginUser.getName());
 						System.out.println("登陆用户的借书状态是："+loginUser.getBorrowStatus());
 						System.out.println("登陆用户的借书编号1是："+loginUser.getBorrowBookNum()[0]);
 						System.out.println("登陆用户的借书编号2是："+loginUser.getBorrowBookNum()[1]);
-						username_textField.setText("");
-						password_textField.setText("");
+							
 						switch(choose){
 						case 1:
 							System.out.println("图书浏览");
@@ -264,10 +272,8 @@ public class HomePage extends JFrame{
 								columnName.add(columnNames[column]);
 							}
 							Vector tableVector = new Vector();
-							
 							for(int row = 0; row < 15; row++){
 								Vector rowV = new Vector();
-								
 								for(int i = 0;i < 15;i++){
 									System.out.println("loginUser.getName = "+loginUser.getName());
 									if(!loginUser.getBorrowBookNum()[row].equals("0")){
@@ -279,19 +285,13 @@ public class HomePage extends JFrame{
 										rowV.add(book.getbookName());
 										rowV.add(book.getbookNumber());
 										System.out.println("getbooknumber = "+book.getbookNumber());
-//										rowV.add(loginUser.getBorrowBookNum()[i]);
+										tableVector.add(rowV);
 										break;
 									}
 								}
-								tableVector.add(rowV);
-//								for(int column = 0;column < columnNames.length;column++){
-//									if(!loginUser.getBorrowBookNum()[column].equals("0")){
-//										rowV.add(loginUser.getBorrowBookNum()[column]);
-//									}
-//									
-//								}
 							}
 							borrowBookTable = new JTable(tableVector,columnName);
+							borrowBookTable.setEnabled(false);
 							borrowBookTable.setRowHeight(50);
 							scrollPane.setViewportView(borrowBookTable);
 							container.add(check_Panel);
@@ -511,7 +511,13 @@ public class HomePage extends JFrame{
 								break;
 							}
 						}
-						ShowMessageDialog dialog = new ShowMessageDialog("借书成功");
+						
+						BookDate borrowbookdate = new BookDate();
+						System.out.println("borrowtime = "+borrowbookdate.getBorrowDate());
+						System.out.println("returntime = "+borrowbookdate.getreturnDate());
+						updatebook.UpdateBookBorrowTime(borrowbookdate.getBorrowDate(), bookNumber_textfield.getText());
+						updatebook.UpdateBookReturnTime(borrowbookdate.getreturnDate(), bookNumber_textfield.getText());
+						ShowMessageDialog dialog = new ShowMessageDialog("借书成功,借书日期 "+borrowbookdate.getBorrowDate() +"至"+ borrowbookdate.getreturnDate());
 					}
 				}else if(findBook.getreserve() == 1){
 					System.out.println("该书已被预定");
@@ -539,9 +545,31 @@ public class HomePage extends JFrame{
 					UpdateUserInformation updateuser = new UpdateUserInformation();
 					for(int i = 1;i <= 15;i++){
 						if(loginUser.getBorrowBookNum()[i-1].equals(bookNumber_textfield.getText())){
-							updateuser.UpdateBorrowBookNum(i, "0", loginUser.getStudentnum());
-							ShowMessageDialog dialog = new ShowMessageDialog("还书成功");
-							break;
+							DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+							try {
+								Calendar now = Calendar.getInstance();
+								String today = "" + now.get(Calendar.YEAR) + "-" + now.get(Calendar.MONTH) + "-" + now.get(Calendar.DATE);
+								Date borrowDate = df.parse(findBook.getborrowTime());
+								Date returnDate = df.parse(findBook.getreturnTime());
+								Date nowDate = df.parse(today);
+								if(nowDate.getTime() > returnDate.getTime()){
+									System.out.println("超过日期");
+								}else if(nowDate.getTime() < returnDate.getTime()){
+									System.out.println("未超过日期");
+									updatebook.UpdateBookBorrowTime("0", bookNumber_textfield.getText());
+									updatebook.UpdateBookReturnTime("0", bookNumber_textfield.getText());
+									updateuser.UpdateBorrowBookNum(i, "0", loginUser.getStudentnum());
+									ShowMessageDialog dialog = new ShowMessageDialog("还书成功");
+									break;
+								}
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+//							updateuser.UpdateBorrowBookNum(i, "0", loginUser.getStudentnum());
+//							ShowMessageDialog dialog = new ShowMessageDialog("还书成功");
+//							break;
 						}
 					}
 					

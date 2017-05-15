@@ -11,6 +11,8 @@ public class Book {
 	private String bookClass;                 //书籍类别
 	private String bookLocation;              //藏书位置
 	private String author;                    //作者
+	private String borrowTime;
+	private String returnTime;
 	
 	public int getreserve(){
 		return this.reserve;
@@ -25,7 +27,7 @@ public class Book {
 		return this.bookNumber;
 	}
 	public String getbookName(){
-		return this.bookClass;
+		return this.bookName;
 	}
 	public String getpublishCompany(){
 		return this.publishCompany;
@@ -45,6 +47,13 @@ public class Book {
 	public String getAuthor(){
 		return this.author;
 	}
+	public String getborrowTime(){
+		return this.borrowTime;
+	}
+	public String getreturnTime(){
+		return this.returnTime;
+	}
+	
 	
 	public void setreserve(int reserve){
 		this.reserve = reserve;
@@ -78,5 +87,11 @@ public class Book {
 	}
 	public void setAuthor(String author){
 		this.author = author;
+	}
+	public void setborrowTime(String borrowtime){
+		this.borrowTime = borrowtime;
+	}
+	public void setreturnTime(String returntime){
+		this.returnTime = returntime;
 	}
 }
