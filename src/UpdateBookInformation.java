@@ -1,8 +1,10 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
-public class UpdateBook {
+/*
+ * 修改数据库中图书的信息
+ */
+public class UpdateBookInformation {
 	GetConnection getConnection = new GetConnection();
 	Connection connection = getConnection.getConnection();
 	

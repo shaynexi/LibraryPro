@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -29,9 +32,14 @@ public class HomePage extends JFrame{
 	private JPanel borrow_bookInformationPanel;
 	private JPanel login_Panel;
 	private JPanel home_Panel;
+	private JPanel check_Panel;
+	private JTable borrowBookTable;
 	private JButton borrow;
 	private JButton returnBook;
 	private Book findBook;
+	private User loginUser;
+	private FindUserInformation finduserinformation;
+	
 	
 	public HomePage(){
 		
@@ -48,6 +56,9 @@ public class HomePage extends JFrame{
 		home_Panel.setBackground(Color.cyan);
 		home_Panel.setBounds(0, 0, 1000, 800);
 		
+		/*
+		 * 图书浏览入口
+		 */
 		JButton library_button = new JButton("图书浏览");
 		library_button.setBounds(250,200,500,50);
 		library_button.addActionListener(new ActionListener(){
@@ -61,6 +72,10 @@ public class HomePage extends JFrame{
 			
 		});
 		home_Panel.add(library_button);
+		
+		/*
+		 * 图书借阅入口
+		 */
 		JButton borrowBook_button = new JButton("图书借阅");
 		borrowBook_button.setBounds(250,270,500,50);
 		borrowBook_button.addActionListener(new ActionListener(){
@@ -78,6 +93,10 @@ public class HomePage extends JFrame{
 			
 		});
 		home_Panel.add(borrowBook_button);
+		
+		/*
+		 * 图书归还入口
+		 */
 		JButton returnBook_button = new JButton("图书归还");
 		returnBook_button.setBounds(250,340,500,50);
 		returnBook_button.addActionListener(new ActionListener(){
@@ -93,6 +112,10 @@ public class HomePage extends JFrame{
 			
 		});
 		home_Panel.add(returnBook_button);
+		
+		/*
+		 * 查看借阅入口
+		 */
 		JButton checkBorrow_button = new JButton("查看借阅");
 		checkBorrow_button.setBounds(250,410,500,50);
 		checkBorrow_button.addActionListener(new ActionListener(){
@@ -102,10 +125,16 @@ public class HomePage extends JFrame{
 				// TODO Auto-generated method stub
 				choose = 4;
 				System.out.println("点击查看借阅");
+				home_Panel.setVisible(false);
+				login_Panel.setVisible(true);
 			}
 			
 		});
 		home_Panel.add(checkBorrow_button);
+		
+		/*
+		 * 图书预定入口
+		 */
 		JButton reserveBook_button = new JButton("图书预定");
 		reserveBook_button.setBounds(250,480,500,50);
 		reserveBook_button.addActionListener(new ActionListener(){
@@ -115,10 +144,16 @@ public class HomePage extends JFrame{
 				// TODO Auto-generated method stub
 				choose = 5;
 				System.out.println("点击图书预定");
+				home_Panel.setVisible(false);
+				login_Panel.setVisible(true);
 			}
 			
 		});
 		home_Panel.add(reserveBook_button);
+		
+		/*
+		 * 管理员入口
+		 */
 		JButton managerEntrance_button = new JButton("管理员入口");
 		managerEntrance_button.setBounds(250,550,500,50);
 		managerEntrance_button.addActionListener(new ActionListener(){
@@ -128,6 +163,8 @@ public class HomePage extends JFrame{
 				// TODO Auto-generated method stub
 				choose = 6;
 				System.out.println("点击管理员入口");
+				home_Panel.setVisible(false);
+				login_Panel.setVisible(true);
 			}
 			
 		});
@@ -163,6 +200,7 @@ public class HomePage extends JFrame{
 		password_textField.setColumns(10);
 		password_textField.setBounds(130,160,150,30);
 		login_Panel.add(password_textField);
+		
 		JButton login = new JButton("登录");
 		login.setBounds(100,210,90,30);
 		login_Panel.add(login);
@@ -175,12 +213,19 @@ public class HomePage extends JFrame{
 					System.out.println("请输入密码");
 				}
 				else{
-					FindUserInformation finduserinformation = new FindUserInformation();
+					finduserinformation = new FindUserInformation();
 					String passWord = finduserinformation.checkPassword(username_textField.getText());
 					if(passWord == null || passWord.length() <= 0){
 						System.out.println("该用户名不存在");
 					}else if(passWord.equals(password_textField.getText())){
 						System.out.println("登录成功");
+						loginUser = finduserinformation.findInformation(username_textField.getText());
+						System.out.println("登陆用户的学号是："+loginUser.getStudentnum());
+						System.out.println("登陆用户的密码是："+loginUser.getpassWord());
+						System.out.println("登陆用户的姓名是："+loginUser.getName());
+						System.out.println("登陆用户的借书状态是："+loginUser.getBorrowStatus());
+						System.out.println("登陆用户的借书编号1是："+loginUser.getBorrowBookNum()[0]);
+						System.out.println("登陆用户的借书编号2是："+loginUser.getBorrowBookNum()[1]);
 						username_textField.setText("");
 						password_textField.setText("");
 						switch(choose){
@@ -189,16 +234,71 @@ public class HomePage extends JFrame{
 							break;
 						case 2:
 							System.out.println("图书借阅");
+							login_Panel.setVisible(false);
+							borrow_wholePanel.setVisible(true);	
 							borrow.setVisible(true);
 							returnBook.setVisible(false);
 							break;
 						case 3:
 							System.out.println("图书归还");
+							login_Panel.setVisible(false);
+							borrow_wholePanel.setVisible(true);	
 							borrow.setVisible(false);
 							returnBook.setVisible(true);
 							break;
 						case 4:
 							System.out.println("查看借阅");
+							
+							check_Panel = new JPanel();
+							check_Panel.setLayout(null);
+							check_Panel.setBackground(Color.cyan);
+							check_Panel.setBounds(0, 0, 1000, 800);
+							
+							final JScrollPane scrollPane = new JScrollPane();
+							check_Panel.add(scrollPane);
+							scrollPane.setBounds(25,50,950,700);
+										
+							String[] columnNames = {"书名","编号"};
+							Vector columnName = new Vector();
+							for(int column = 0;column < columnNames.length;column++){
+								columnName.add(columnNames[column]);
+							}
+							Vector tableVector = new Vector();
+							
+							for(int row = 0; row < 15; row++){
+								Vector rowV = new Vector();
+								
+								for(int i = 0;i < 15;i++){
+									System.out.println("loginUser.getName = "+loginUser.getName());
+									if(!loginUser.getBorrowBookNum()[row].equals("0")){
+										Book book = new Book();
+										BorrowInformation bookinformation = new BorrowInformation();
+										System.out.println("booknumber = "+loginUser.getBorrowBookNum()[row]);
+										book = bookinformation.getBookInformation(loginUser.getBorrowBookNum()[row]);
+										System.out.println("getbookname = "+book.getbookName());
+										rowV.add(book.getbookName());
+										rowV.add(book.getbookNumber());
+										System.out.println("getbooknumber = "+book.getbookNumber());
+//										rowV.add(loginUser.getBorrowBookNum()[i]);
+										break;
+									}
+								}
+								tableVector.add(rowV);
+//								for(int column = 0;column < columnNames.length;column++){
+//									if(!loginUser.getBorrowBookNum()[column].equals("0")){
+//										rowV.add(loginUser.getBorrowBookNum()[column]);
+//									}
+//									
+//								}
+							}
+							borrowBookTable = new JTable(tableVector,columnName);
+							borrowBookTable.setRowHeight(50);
+							scrollPane.setViewportView(borrowBookTable);
+							container.add(check_Panel);
+							login_Panel.setVisible(false);
+							check_Panel.setVisible(true);
+							borrow.setVisible(false);
+							returnBook.setVisible(false);
 							break;
 						case 5:
 							System.out.println("图书预定");
@@ -208,8 +308,7 @@ public class HomePage extends JFrame{
 							break;
 						
 						}
-						login_Panel.setVisible(false);
-						borrow_wholePanel.setVisible(true);		
+							
 					}else{
 						System.out.println("密码不正确");
 					}
@@ -233,6 +332,9 @@ public class HomePage extends JFrame{
 		login_Panel.add(log_back);
 		container.add(login_Panel);
 		login_Panel.setVisible(false);
+		
+		/*********************************************** 登录界面结束  ***********************************************/
+		
 		
 		/*********************************************** 借书/还书 界面  ***********************************************/
 		borrow_wholePanel = new JPanel();
@@ -391,15 +493,26 @@ public class HomePage extends JFrame{
 		borrow_bottomButtonPanel.setLayout(null);
 		borrow_bottomButtonPanel.setBounds(0,650,1000,30);
 		borrow_bottomButtonPanel.setBackground(Color.cyan);
-		 borrow = new JButton("借书");
+		borrow = new JButton("借书");
 		borrow.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if(findBook.getborrowStatus() == 0 && findBook.getreserve() == 0){
-					UpdateBook updatebook = new UpdateBook();
-					updatebook.UpdateBookBorrowStatus(1, bookNumber_textfield.getText());
-					ShowMessageDialog dialog = new ShowMessageDialog("借书成功");
+					if(loginUser.getBorrowStatus() == 1){
+						ShowMessageDialog dialog = new ShowMessageDialog("借书不可超过15本，借阅失败");
+					}else{
+						UpdateBookInformation updatebook = new UpdateBookInformation();
+						updatebook.UpdateBookBorrowStatus(1, bookNumber_textfield.getText());
+						for(int i = 1;i <= 15; i++){
+							if(loginUser.getBorrowBookNum()[i-1].equals("0")){
+								UpdateUserInformation updateuser = new UpdateUserInformation();
+								updateuser.UpdateBorrowBookNum(i,bookNumber_textfield.getText(), loginUser.getStudentnum());
+								break;
+							}
+						}
+						ShowMessageDialog dialog = new ShowMessageDialog("借书成功");
+					}
 				}else if(findBook.getreserve() == 1){
 					System.out.println("该书已被预定");
 					ShowMessageDialog dialog = new ShowMessageDialog("该书已被预定");
@@ -421,9 +534,18 @@ public class HomePage extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if(findBook.getborrowStatus() == 1){
-					UpdateBook updatebook = new UpdateBook();
+					UpdateBookInformation updatebook = new UpdateBookInformation();
 					updatebook.UpdateBookBorrowStatus(0, bookNumber_textfield.getText());
-					ShowMessageDialog dialog = new ShowMessageDialog("还书成功");
+					UpdateUserInformation updateuser = new UpdateUserInformation();
+					for(int i = 1;i <= 15;i++){
+						if(loginUser.getBorrowBookNum()[i-1].equals(bookNumber_textfield.getText())){
+							updateuser.UpdateBorrowBookNum(i, "0", loginUser.getStudentnum());
+							ShowMessageDialog dialog = new ShowMessageDialog("还书成功");
+							break;
+						}
+					}
+					
+					
 				}else if(findBook.getborrowStatus() == 0){
 					System.out.println("该书已归还");
 					ShowMessageDialog dialog = new ShowMessageDialog("该书已归还");
@@ -495,8 +617,6 @@ public class HomePage extends JFrame{
 		borrow_inputPanel.setVisible(true);
 		
 		/*********************************************** 借书/还书 界面结束  ***********************************************/
-		
-		
 		
 		
 	}

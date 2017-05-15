@@ -1,6 +1,8 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
-
+/*
+ * 连接数据库
+ */
 public class GetConnection {
 	public Connection connection = null;
 	public Connection getConnection(){

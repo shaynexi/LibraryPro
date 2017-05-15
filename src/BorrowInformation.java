@@ -3,7 +3,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.mysql.jdbc.PreparedStatement;
-
+/*
+ * 获取数据库中图书的信息
+ */
 public class BorrowInformation {
 	 
 	GetConnection getconnection = new GetConnection();
